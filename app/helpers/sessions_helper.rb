@@ -32,12 +32,6 @@ module SessionsHelper
     self.current_user = nil
   end
 
-  def deny_access
-    store_location
-    flash[:notice] = 'Please sign in to access this page.'
-    redirect_to signin_path
-  end
-
   def store_location
     session[:return_to] = request.request_uri
   end
@@ -48,5 +42,15 @@ module SessionsHelper
 
   def clear_return_to
     session[:return_to] = nil
+  end
+
+  def authenticate
+    deny_access unless signed_in?
+  end
+
+  def deny_access
+    store_location
+    flash[:notice] = 'Please sign in to access this page.'
+    redirect_to signin_path
   end
 end
